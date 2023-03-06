@@ -674,15 +674,17 @@ components:
             - user
         id_team:
           type: integer
-          data : 
+          enum : 
+                [
                 {
                  id: "1",
                  name: "Placement",
-                }
+                },
                 {
                  id: "2",
                  name: "Academic",
                 }
+                ]
         status:
           type: boolean
         created_at:
