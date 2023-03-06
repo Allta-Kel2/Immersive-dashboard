@@ -12,4 +12,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	AuthRouter(db, e)
 	UserRouter(db, e)
 	TeamRouter(db, e)
+	ClassRouter(db, e)
 }
