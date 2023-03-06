@@ -9,7 +9,7 @@ import (
 
 type Mentee struct {
 	gorm.Model
-	ClassId         int
+	ClassId         uint
 	Class           *c.Class `gorm:"foreignKey:ClassId"`
 	FullName        string
 	NickName        string
@@ -18,7 +18,7 @@ type Mentee struct {
 	CurrentAddress  string
 	HomeAddress     string
 	Telegram        string
-	StatusId        int
+	StatusId        uint
 	Status          *s.Status `gorm:"foreignKey:StatusId"`
 	Gender          string
 	EducationType   string
