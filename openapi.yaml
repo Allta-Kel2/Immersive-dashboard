@@ -685,29 +685,7 @@ components:
           type: string
         message:
           type: string
-  responses:
-    '404':
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            $ref: '#/components/schemas/ResponseWithoutData'
-          example:
-            status: "failed"
-            message: "data not found"
-
-
-    '500':
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            type: object
-            $ref: '#/components/schemas/ResponseWithoutData'
-          example:
-            status: "failed"
-            message: "internal server error"
+ 
     Team:
       type: object
       required:
@@ -771,3 +749,27 @@ components:
           type: string
           format: date-time
           description: The date and time the team was deleted
+
+  responses:
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            $ref: '#/components/schemas/ResponseWithoutData'
+          example:
+            status: "failed"
+            message: "data not found"
+
+
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            $ref: '#/components/schemas/ResponseWithoutData'
+          example:
+            status: "failed"
+            message: "internal server error"
