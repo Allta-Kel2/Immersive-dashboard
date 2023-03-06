@@ -28,7 +28,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
+                  status: true
                   message: "Login berhasil"
                   data:
                       id: 1
@@ -69,7 +69,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
+                  status: true
                   message: "register berhasil"
         '400':
           description: Register gagal.
@@ -78,7 +78,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "failed"
+                  status: false
                   message: "register gagal. semua field wajib diisi"
         '500':
           $ref: '#/components/responses/500'
@@ -97,7 +97,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
+                  status: true
                   message: "success get all users"
                   data:
                     - id: 1
@@ -134,7 +134,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
+                  status: true
                   message: "success get all users"
                   data:
                     - id: 1
@@ -183,7 +183,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
+                  status: true
                   message: "success Update users"
                   data: 
                     full_name: "reza yuda"
@@ -221,7 +221,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
+                  status: true
                   message: "Delete success"
                   data:
                     full_name: reza
@@ -772,7 +772,7 @@ components:
             type: object
             $ref: '#/components/schemas/ResponseWithoutData'
           example:
-            status: "failed"
+            status: false
             message: "data not found"
 
 
@@ -784,5 +784,5 @@ components:
             type: object
             $ref: '#/components/schemas/ResponseWithoutData'
           example:
-            status: "failed"
+            status: false
             message: "internal server error"
