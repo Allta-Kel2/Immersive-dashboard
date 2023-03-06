@@ -6,16 +6,18 @@ import (
 )
 
 type UserEntity struct {
-	Id        uint
-	TeamId    uint
-	Team      teams.TeamEntity
-	FullName  string
-	Email     string
-	Password  string
-	Role      string
-	Status    bool
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id          uint
+	TeamId      uint
+	Team        teams.TeamEntity
+	FullName    string
+	Email       string
+	Password    string
+	PhoneNumber string
+	Address     string
+	Role        string
+	Status      bool
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type UserServiceInterface interface {

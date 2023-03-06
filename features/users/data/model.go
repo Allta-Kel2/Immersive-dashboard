@@ -9,13 +9,15 @@ import (
 
 type User struct {
 	gorm.Model
-	TeamId   uint
-	Team     *team.Team `gorm:"foreignKey:TeamId"`
-	FullName string
-	Email    string `gorm:"unique"`
-	Password string
-	Role     string
-	Status   bool
+	TeamId      uint
+	Team        *team.Team `gorm:"foreignKey:TeamId"`
+	FullName    string
+	Email       string `gorm:"unique"`
+	Password    string
+	Role        string
+	PhoneNumber string
+	Address     string
+	Status      bool
 }
 
 func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
