@@ -31,10 +31,6 @@ func (s *ClassService) Create(classEntity classes.ClassEntity) (classes.ClassEnt
 	return s.Data.SelectById(user_id)
 }
 
-func (s *ClassService) Delete(id uint) error {
-	return s.Data.Destroy(id)
-}
-
 func (s *ClassService) Update(classEntity classes.ClassEntity, id uint) (classes.ClassEntity, error) {
 	if checkDataExist, err := s.Data.SelectById(id); err != nil {
 		return checkDataExist, err
@@ -45,4 +41,12 @@ func (s *ClassService) Update(classEntity classes.ClassEntity, id uint) (classes
 		return classes.ClassEntity{}, err
 	}
 	return s.Data.SelectById(id)
+}
+
+func (s *ClassService) Delete(id uint) error {
+	if _, err := s.Data.SelectById(id); err != nil {
+		return err
+	}
+
+	return s.Data.Destroy(id)
 }
