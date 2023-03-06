@@ -9,7 +9,8 @@ import (
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	middlewares.BasicLogger(e)
-	// AuthRouter(db, e)
-	// UserRouter(db, e)
-	// TeamRouter(db, e)
+	AuthRouter(db, e)
+	UserRouter(db, e)
+	TeamRouter(db, e)
+	ClassRouter(db, e)
 }
