@@ -8,21 +8,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// func InitEnv() *AppConfig {
-// 	if err := godotenv.Load(".env"); err != nil {
-// 		log.Fatalf("Error loading .env file")
-// 	}
-
-// 	return &AppConfig{
-// 		DBUSERNAME: os.Getenv("DBUSERNAME"),
-// 		DBPASS:     os.Getenv("DBPASS"),
-// 		DBHOST:     os.Getenv("DBHOST"),
-// 		DBPORT:     os.Getenv("DBPORT"),
-// 		DBNAME:     os.Getenv("DBNAME"),
-// 		JWTKEY:     os.Getenv("SECRETKEY"),
-// 	}
-// }
-
 func InitEnv() *AppConfig {
 	fmt.Println("MASUK")
 	app := AppConfig{}
@@ -53,11 +38,11 @@ func InitEnv() *AppConfig {
 		isRead = false
 	}
 
-	// err2 := viper.Unmarshal(&app)
-	// if err2 != nil {
-	// 	log.Println("error parse config : ", err2.Error())
-	// 	return nil
-	// }
+	err2 := viper.Unmarshal(&app)
+	if err2 != nil {
+		log.Println("error parse config : ", err2.Error())
+		return nil
+	}
 
 	if isRead {
 		viper.AddConfigPath("./")
