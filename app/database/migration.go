@@ -3,6 +3,8 @@ package database
 import (
 	"fmt"
 	class "immersiveApp/features/classes/data"
+	feedback "immersiveApp/features/feedbacks/data"
+	mentee "immersiveApp/features/mentees/data"
 	status "immersiveApp/features/statuses/data"
 	team "immersiveApp/features/teams/data"
 	user "immersiveApp/features/users/data"
@@ -16,6 +18,8 @@ func InitMigration(db *gorm.DB) {
 		&class.Class{},
 		&status.Status{},
 		&user.User{},
+		&mentee.Mentee{},
+		&feedback.Feedback{},
 	)
 
 	if err != nil {

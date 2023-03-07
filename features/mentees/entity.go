@@ -2,6 +2,7 @@ package mentees
 
 import (
 	"immersiveApp/features/classes"
+	"immersiveApp/features/statuses"
 	"time"
 )
 
@@ -17,7 +18,7 @@ type MenteeEntity struct {
 	HomeAddress    string
 	Telegram       string
 	StatusId       uint
-	// Status          statuses.StatusEntity
+	Status          statuses.StatusEntity
 	Gender          string
 	EducationType   string
 	Major           string

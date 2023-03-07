@@ -17,7 +17,7 @@ func New(db *gorm.DB) mentees.MenteeDataInterface {
 
 func (q *query) SelectAll() ([]mentees.MenteeEntity, error) {
 	var mentees []Mentee
-	if err := q.db.Preload("Mentee").Find(&mentees); err.Error != nil {
+	if err := q.db.Find(&mentees); err.Error != nil {
 		return nil, err.Error
 	}
 	return ListMenteeToMenteeEntity(mentees), nil
@@ -25,7 +25,7 @@ func (q *query) SelectAll() ([]mentees.MenteeEntity, error) {
 
 func (q *query) SelectById(id uint) (mentees.MenteeEntity, error) {
 	var mentee Mentee
-	if err := q.db.Preload("Mentee").First(&mentee, id); err.Error != nil {
+	if err := q.db.First(&mentee, id); err.Error != nil {
 		return mentees.MenteeEntity{}, err.Error
 	}
 	return MenteeToMenteeEntity(mentee), nil

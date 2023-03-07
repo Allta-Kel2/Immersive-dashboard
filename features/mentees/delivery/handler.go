@@ -24,7 +24,7 @@ func (m *MenteeHandler) GetAll(c echo.Context) error{
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFail("error read data"))
 	}
 	listMenteeResponse := ListMenteeToMenteeResponse(menteeEntity)
-	return c.JSON(http.StatusOK, helpers.ResponseSuccess("all teams", listMenteeResponse))
+	return c.JSON(http.StatusOK, helpers.ResponseSuccess("all mentees", listMenteeResponse))
 }
 
 func (m *MenteeHandler) GetById(c echo.Context) error{
@@ -44,7 +44,7 @@ func (m *MenteeHandler) Create(c echo.Context) error{
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFail("error bind data"))
 	}
 
-	mentee, err := m.Service.Create(menteeRequestToMenteeEntity(formInput))
+	mentee, err := m.Service.Create(MenteeRequestToMenteeEntity(&formInput))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFail(err.Error()))
 	}
@@ -61,7 +61,7 @@ func (m *MenteeHandler) Update(c echo.Context) error{
 	_id, _ := strconv.Atoi(c.Param("id"))
 	id := uint(_id)
 
-	mentee, err := m.Service.Update(menteeRequestToMenteeEntity(formInput), id)
+	mentee, err := m.Service.Update(MenteeRequestToMenteeEntity(&formInput), id)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, helpers.ResponseFail(err.Error()))
 	}
