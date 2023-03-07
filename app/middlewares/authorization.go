@@ -17,9 +17,9 @@ func Authorization(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-func CanAccess(user_id_token, user_id_db uint, role string) bool {
+func CanAccess(user_id_db, user_id_token int, role_token string) bool {
 	flag := false
-	if user_id_token == user_id_db || role == "admin" {
+	if user_id_token == user_id_db || role_token == "admin" {
 		flag = true
 	}
 
