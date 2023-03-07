@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to server using SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/findryankpradana/Immersive-dashboard
+            sudo checkout -b master
+            sudo git pull origin master
+            sudo docker stop apiContainer
+            sudo docker rm apiContainer
+            sudo docker rmi apiImages
+            sudo docker build -t apiImages:latest .
+            sudo docker run -d -p 8080:8080 --name apiContainer apiImages:latest
