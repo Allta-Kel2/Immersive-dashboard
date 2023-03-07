@@ -17,10 +17,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /home/findryankpradana/Immersive-dashboard
-            sudo git checkout master
             sudo git pull origin master
-            sudo docker stop apiContainer
-            sudo docker rm apiContainer
-            sudo docker rmi apiImages
             sudo docker build -t apiImages:latest .
             sudo docker run -d -p 8080:8080 --name apiContainer apiImages:latest
