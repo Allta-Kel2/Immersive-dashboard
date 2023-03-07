@@ -3,6 +3,7 @@ package data
 import (
 	"immersiveApp/features/classes"
 	"immersiveApp/features/mentees"
+	"immersiveApp/features/statuses"	
 	"reflect"
 )
 
@@ -52,10 +53,14 @@ func MenteeToMenteeEntity(mentee Mentee) mentees.MenteeEntity {
 		CreatedAt:       mentee.CreatedAt,
 		UpdatedAt:       mentee.UpdatedAt,
 	}
-	if !reflect.ValueOf(mentee.Class).IsZero() {
+	if !reflect.ValueOf(mentee).IsZero() {
 		result.Class = classes.ClassEntity{
 			Id:        mentee.Class.ID,
 			ClassName: mentee.Class.ClassName,
+		}
+		result.Status = statuses.StatusEntity{
+			Id: mentee.Status.ID,
+			Name: mentee.Status.Name,
 		}
 	}
 	return result
