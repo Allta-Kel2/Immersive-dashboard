@@ -10,8 +10,8 @@ import (
 
 func InitMigration(db *gorm.DB) {
 	err := db.AutoMigrate(
-		&user.User{},
 		&team.Team{},
+		&user.User{},
 	)
 
 	if err != nil {
