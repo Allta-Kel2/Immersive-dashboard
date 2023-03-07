@@ -7,14 +7,14 @@ import (
 
 type UserEntity struct {
 	Id          uint
-	TeamId      uint
+	TeamId      uint `validate:"required"`
 	Team        teams.TeamEntity
-	FullName    string
-	Email       string
-	Password    string
-	PhoneNumber string
-	Address     string
-	Role        string
+	FullName    string `validate:"required"`
+	Email       string `validate:"required,email"`
+	Password    string `validate:"required"`
+	PhoneNumber string `validate:"required"`
+	Address     string `validate:"required"`
+	Role        string `validate:"required"`
 	Status      bool
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
