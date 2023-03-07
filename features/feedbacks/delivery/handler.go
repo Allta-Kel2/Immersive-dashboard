@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	"immersiveApp/app/middlewares"
 	"immersiveApp/features/feedbacks"
 	"immersiveApp/utils/helpers"
 	"net/http"
@@ -46,6 +47,10 @@ func (f *FeedbackHandler) Create(c echo.Context) error {
 	if err := c.Bind(&formInput); err != nil {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFail("error bind data"))
 	}
+
+	claim := middlewares.ClaimsToken(c)
+	user_id := claim.Id
+	formInput.UserId = uint(user_id)
 
 	feedback, err := f.Service.Create(FeedbackRequestToFeedbackEntity(&formInput))
 	if err != nil {

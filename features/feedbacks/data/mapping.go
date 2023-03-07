@@ -34,15 +34,15 @@ func FeedbackToFeedbackEntity(feedback Feedback) feedbacks.FeedbackEntity {
 	if !reflect.ValueOf(feedback).IsZero() {
 		result.User = users.UserEntity{
 			Id:       feedback.User.ID,
-			FullName: feedback.User.FullName,
+			// FullName: feedback.User.FullName,
 		}
 		result.Mentee = mentees.MenteeEntity{
 			Id:       feedback.Mentee.ID,
-			FullName: feedback.Mentee.FullName,
+			// FullName: feedback.Mentee.FullName,
 		}
 		result.Status = statuses.StatusEntity{
 			Id: feedback.Status.ID,
-			Name: feedback.Status.Name,
+			// Name: feedback.Status.Name,
 		}
 	}
 	return result
