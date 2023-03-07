@@ -12,11 +12,11 @@ type Feedback struct {
 	gorm.Model
 	Notes    string
 	Proof    string
-	UserId   int
+	UserId   uint
 	User     *u.User `gorm:"foreignKey:UserId"`
-	MenteeId int
+	MenteeId uint
 	Mentee   *m.Mentee `gorm:"foreignKey:UserId"`
-	StatusId int
+	StatusId uint
 	Status   *s.Status `gorm:"foreignKey:UserId"`
 	Approved bool
 }
