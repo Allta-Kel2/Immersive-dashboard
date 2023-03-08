@@ -11,7 +11,6 @@ import (
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	middlewares.BasicLogger(e)
-	middlewares.Cors(e)
 	e.GET("/", index)
 	SwaggerRouter(e)
 	AuthRouter(db, e)

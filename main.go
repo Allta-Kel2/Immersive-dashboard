@@ -3,6 +3,7 @@ package main
 import (
 	"immersiveApp/app/configs"
 	"immersiveApp/app/database"
+	"immersiveApp/app/middlewares"
 	"immersiveApp/app/router"
 	"immersiveApp/docs"
 
@@ -16,6 +17,7 @@ func main() {
 	database.InitMigration(db)
 
 	e := echo.New()
+	middlewares.Cors(e)
 	router.InitRouter(db, e)
 	e.Logger.Fatal(e.Start(":8080"))
 }
