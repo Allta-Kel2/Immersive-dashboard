@@ -1,7 +1,6 @@
 package configs
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -9,7 +8,6 @@ import (
 )
 
 func InitEnv() *AppConfig {
-	fmt.Println("MASUK")
 	app := AppConfig{}
 	isRead := true
 
