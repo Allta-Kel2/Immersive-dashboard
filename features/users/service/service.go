@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"immersiveApp/features/users"
 
 	"github.com/go-playground/validator/v10"
@@ -26,6 +27,10 @@ func (s *userService) GetById(id uint) (users.UserEntity, error) {
 }
 
 func (s *userService) Create(userEntity users.UserEntity) (users.UserEntity, error) {
+	if userEntity.Role != "admin" && userEntity.Role != "user" {
+		return users.UserEntity{}, errors.New("role option only : admin and user")
+	}
+
 	s.validate = validator.New()
 	errValidate := s.validate.StructExcept(userEntity, "Team")
 	if errValidate != nil {

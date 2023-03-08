@@ -25,7 +25,7 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 
 func index(c echo.Context) error {
 	var data = map[string]interface{}{
-		"message":       "Welcome to API Absensi",
+		"message":       "Welcome to API Immersive Project",
 		"documentation": "/swagger/index.html",
 	}
 
