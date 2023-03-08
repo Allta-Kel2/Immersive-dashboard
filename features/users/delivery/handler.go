@@ -6,11 +6,13 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
 type UserHandler struct {
-	Service users.UserServiceInterface
+	Service  users.UserServiceInterface
+	validate *validator.Validate
 }
 
 func New(s users.UserServiceInterface) *UserHandler {
@@ -44,6 +46,12 @@ func (h *UserHandler) Create(c echo.Context) error {
 	var formInput UserRequest
 	if err := c.Bind(&formInput); err != nil {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFail("error bind data"))
+	}
+
+	h.validate = validator.New()
+	errValidate := h.validate.Struct(formInput)
+	if errValidate != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFail(errValidate.Error()))
 	}
 
 	user, err := h.Service.Create(UserRequestToUserEntity(formInput))
