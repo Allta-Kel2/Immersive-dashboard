@@ -26,10 +26,10 @@ func (s *userService) GetById(id uint) (users.UserEntity, error) {
 }
 
 func (s *userService) Create(userEntity users.UserEntity) (users.UserEntity, error) {
-	errValidate := s.validate.Struct(userEntity)
-	if errValidate != nil {
-		return users.UserEntity{}, errValidate
-	}
+	// errValidate := s.validate.Struct(userEntity)
+	// if errValidate != nil {
+	// 	return users.UserEntity{}, errValidate
+	// }
 
 	userEntity.Status = true
 	user_id, err := s.Data.Store(userEntity)
