@@ -3,11 +3,11 @@ package main
 import (
 	"immersiveApp/app/configs"
 	"immersiveApp/app/database"
-	"immersiveApp/app/middlewares"
 	"immersiveApp/app/router"
 	"immersiveApp/docs"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -17,7 +17,10 @@ func main() {
 	database.InitMigration(db)
 
 	e := echo.New()
-	middlewares.Cors(e)
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 	router.InitRouter(db, e)
 	e.Logger.Fatal(e.Start(":8080"))
 }
