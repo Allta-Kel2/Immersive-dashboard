@@ -27,7 +27,8 @@ func (s *ClassService) GetById(id uint) (classes.ClassEntity, error) {
 }
 
 func (s *ClassService) Create(classEntity classes.ClassEntity) (classes.ClassEntity, error) {
-	errValidate := s.validate.Struct(classEntity)
+	s.validate = validator.New()
+	errValidate := s.validate.StructExcept(classEntity, "User")
 	if errValidate != nil {
 		return classes.ClassEntity{}, errValidate
 	}
