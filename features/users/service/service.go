@@ -2,10 +2,13 @@ package service
 
 import (
 	"immersiveApp/features/users"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type userService struct {
-	Data users.UserDataInterface
+	Data     users.UserDataInterface
+	validate *validator.Validate
 }
 
 func New(data users.UserDataInterface) users.UserServiceInterface {
@@ -23,6 +26,11 @@ func (s *userService) GetById(id uint) (users.UserEntity, error) {
 }
 
 func (s *userService) Create(userEntity users.UserEntity) (users.UserEntity, error) {
+	// errValidate := s.validate.Struct(userEntity)
+	// if errValidate != nil {
+	// 	return users.UserEntity{}, errValidate
+	// }
+
 	userEntity.Status = true
 	user_id, err := s.Data.Store(userEntity)
 	if err != nil {
