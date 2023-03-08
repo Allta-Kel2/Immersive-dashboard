@@ -46,12 +46,12 @@ func (s *userService) Update(request users.UserEntity, id uint) (users.UserEntit
 		return checkDataExist, err
 	}
 
-	user_id, err := s.Data.Edit(request, id)
+	_, err := s.Data.Edit(request, id)
 	if err != nil {
 		return users.UserEntity{}, err
 	}
 
-	return s.Data.SelectById(user_id)
+	return s.Data.SelectById(id)
 }
 
 func (s *userService) Delete(id uint) error {
