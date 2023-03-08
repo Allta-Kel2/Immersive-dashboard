@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	"immersiveApp/app/middlewares"
 	_menteeData "immersiveApp/features/mentees/data"
 	_menteeHandler "immersiveApp/features/mentees/delivery"
 	_menteeService "immersiveApp/features/mentees/service"
@@ -15,6 +16,7 @@ func MenteeRouter(db *gorm.DB, e *echo.Echo) {
 	handler := _menteeHandler.New(service)
 
 	g := e.Group("/mentees")
+	g.Use(middlewares.Authentication)
 	g.GET("", handler.GetAll)
 	g.GET("/:id", handler.GetById)
 	g.POST("", handler.Create)
