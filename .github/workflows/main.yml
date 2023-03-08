@@ -18,8 +18,8 @@ jobs:
           script: |
             cd /home/findryankpradana/Immersive-dashboard
             sudo git pull origin dev
-            # sudo docker stop containerapi
-            # sudo docker rm containerapi
-            # sudo docker rmi imagesapi
-            # sudo docker build -t imagesapi:latest .
-            # sudo docker run -d -p 8080:8080 --name containerapi imagesapi:latest
+            sudo docker stop containerapi
+            sudo docker rm containerapi
+            sudo docker rmi imagesapi
+            sudo docker build -t imagesapi:latest .
+            sudo docker run -d -p 8080:8080 --name containerapi imagesapi:latest

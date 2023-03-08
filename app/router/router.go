@@ -10,6 +10,7 @@ import (
 )
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
+	middlewares.Cors(e)
 	middlewares.BasicLogger(e)
 	e.GET("/", index)
 	SwaggerRouter(e)
