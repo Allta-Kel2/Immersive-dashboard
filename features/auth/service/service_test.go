@@ -1,31 +1,58 @@
 package service
 
 import (
-	login "immersiveApp/features/auth/delivery"
+	"immersiveApp/features/users"
 	"immersiveApp/mocks"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestLogin(t *testing.T) {
 	data := mocks.NewAuthDataInterface(t)
 	srv := New(data)
-	isi := login.LoginRequest{Email: "", Password: ""}
-	input := login.LoginRequest{Email: "rischi@gmail.com", Password: "123$"}
-	t.Run("Success login", func(t *testing.T) {
-		data.On("Login", mock.Anything).Return(input, nil).Once()
+	mockUser := users.UserEntity{
+		Id:       1,
+		Email:    "test@example.com",
+		Password: "$2a$10$GzLZnYRZuM1J92T8oR0h0eGs/nlPI1RVeX9J0vquSEoEaYq3LRsW2", // "password"
+		Role:     "user",
+	}
 
-		_, err := srv.Login(input.Email, input.Password)
-		assert.Nil(t, err)
-		assert.Empty(t, err)
-		data.AssertExpectations(t)
+	t.Run("login success", func(t *testing.T) {
+		data.On("GetUserByEmailOrId", mockUser.Email, uint(0)).Return(mockUser, nil).Once()
+		token, err := srv.Login(mockUser.Email, "password")
+		assert.NotNil(t, token)
+		assert.Equal(t, err, "GetUserByEmailOrId")
+		assert.NotEmpty(t, token)
 	})
-	t.Run("email and password must be fill", func(t *testing.T) {
-		_, err := srv.Login(isi.Email, isi.Password)
-		assert.NotEmpty(t, err)
-		assert.NotNil(t, err)
-		data.AssertExpectations(t)
+
+	t.Run("email and password must be filled", func(t *testing.T) {
+		token, err := srv.Login("", "")
+		assert.EqualError(t, err, "email and password must be fill")
+		assert.Empty(t, token)
+	})
+
+	t.Run("user and password not found", func(t *testing.T) {
+		token, err := srv.Login("user1@example.com", "")
+		assert.EqualError(t, err, "user and password not found")
+		assert.Empty(t, token)
 	})
 }
+
+func TestAuthService_ChangePassword(t *testing.T) {}
+
+// func TestRegister(t *testing.T) {
+// 	data := mocks.NewAuthDataInterface(t)
+// 	srv := New(data)
+// 	user := users.UserEntity{}
+// 	t.Run("register success", func(t *testing.T) {
+// 		err := srv.Register(users.UserEntity{
+// 			Name:     "User 1",
+// 			Email:    "user1@example.com",
+// 			Password: "password",
+// 			Role:     "user",
+// 		})
+// 		assert.NoError(t, err)
+// 		assert.Len(t, user, 1)
+// 	})
+// }
