@@ -1160,6 +1160,8 @@ paths:
       tags:
       - Class
       summary: Delete a team by ID
+      security:
+        - JWTAuth: []
       responses:
         '204':
           description: The team was successfully deleted
@@ -1190,6 +1192,8 @@ paths:
         - Status
       summary: get all status
       description: get all status
+      security:
+        - JWTAuth: []
       parameters:
         - name: status_id
           description: "status"
