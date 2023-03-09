@@ -950,16 +950,36 @@ paths:
                       {
                         "id": 1,
                         "name": "BE 11",
-                        "pic": "Fakhry",
+                        "pic_user_id": 1,
                         "start_date": "2022-06-10",
-                        "graduate_date": "2022-08-30"
+                        "graduate_date": "2022-08-30",
+                        "user" : {
+                          "id": 1,
+                          "team_id": 1,
+                          "full_name": "hahhaha",
+                          "email": "findryan@gmail.com",
+                          "role": "admin",
+                          "status": false,
+                          "phone_number": "",
+                          "address": "madiun"
+                        }
                       },
                       {
                         "id": 2,
                         "name": "FE 8",
-                        "pic": "Bagas",
+                        "pic_user_id": 2,
                         "start_date": "2022-06-10",
-                        "graduate_date": "2022-08-30"
+                        "graduate_date": "2022-08-30",
+                        "user" : {
+                          "id": 2,
+                          "team_id": 1,
+                          "full_name": "hahhaha",
+                          "email": "findryan@gmail.com",
+                          "role": "admin",
+                          "status": false,
+                          "phone_number": "",
+                          "address": "madiun"
+                        }
                       }
                     ]
                   }

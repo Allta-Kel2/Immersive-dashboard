@@ -8,5 +8,5 @@ type ClassResponse struct {
 	PicUserId    uint                   `json:"pic_user_id"`
 	DateStart    string                 `json:"date_start"`
 	DateGraduate string                 `json:"date_graduate"`
-	User         *delivery.UserResponse `json:"team,omitempty"`
+	User         *delivery.UserResponse `json:"user,omitempty"`
 }
