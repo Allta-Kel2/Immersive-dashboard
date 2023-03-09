@@ -974,16 +974,24 @@ paths:
                       {
                         "id": 1,
                         "name": "BE 11",
-                        "pic": "Fakhry",
+                        "pic_user_id": 1,
                         "start_date": "2022-06-10",
-                        "graduate_date": "2022-08-30"
+                        "graduate_date": "2022-08-30",
+                        "user" : {
+                          "full_name": "hahhaha",
+                          "email": "findryan@gmail.com",
+                        }
                       },
                       {
                         "id": 2,
                         "name": "FE 8",
-                        "pic": "Bagas",
+                        "pic_user_id": 2,
                         "start_date": "2022-06-10",
-                        "graduate_date": "2022-08-30"
+                        "graduate_date": "2022-08-30",
+                        "user" : {
+                          "full_name": "hahhaha",
+                          "email": "findryan2@gmail.com",
+                        }
                       }
                     ]
                   }
@@ -1583,6 +1591,7 @@ components:
           example:
             status: false
             message: "internal server error"
+
 
 
 `
