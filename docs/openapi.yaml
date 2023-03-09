@@ -37,6 +37,8 @@ paths:
                       token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
         '401' :
           $ref: '#/components/responses/401'
+        '400':
+          $ref: '#/components/responses/400'
 
   /auth/users:
     get:
@@ -103,6 +105,8 @@ paths:
                   status: true
                   message: "-"
                   data: null
+        '400':
+          $ref: '#/components/responses/400'
         '401' :
           $ref: '#/components/responses/401'
         '500' :
@@ -765,7 +769,7 @@ paths:
                       },
                     ]
                   }
-
+        
         '401' :
           $ref: '#/components/responses/401'
     post:
@@ -807,6 +811,8 @@ paths:
                         name: "Placement",
                       }
                   }               
+        '400':
+          $ref: '#/components/responses/400'
         '401' :
           $ref: '#/components/responses/401'
         '500' :
@@ -1060,6 +1066,8 @@ paths:
                         "graduate_date": "2022-08-30"
                       }
                   }
+        '400':
+          $ref: '#/components/responses/400'
         '404':
           $ref: '#/components/responses/404'
         '401' :
@@ -1115,7 +1123,8 @@ paths:
                         name: "Placement",
                       }
                   }
-          
+        '400':
+          $ref: '#/components/responses/400'
         '404':
           $ref: '#/components/responses/404'
         '401' :
@@ -1139,14 +1148,18 @@ paths:
                     status: true,
                     message: "Delete data success"
                   }
-         $ref: '#/components/responses/204'
+        '400':
+          $ref: '#/components/responses/400'
         '404':
           $ref: '#/components/responses/404'
         '401' :
           $ref: '#/components/responses/401'
         '500' :
           $ref: '#/components/responses/500'
-                  
+
+####################################
+#  STATUS
+####################################                
   /status/:
     get:
       tags:
@@ -1154,8 +1167,8 @@ paths:
       summary: get status by name
       description: Mencari status dengan nama
       parameters:
-        - name: id_status
-          description: "id status"
+        - name: status_id
+          description: "status"
           required: false
           in: query
           schema:
@@ -1467,6 +1480,21 @@ components:
           description: The date and time the team was deleted
     
   responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
+          example:
+            status: false
+            message: "error in your request"
+
     '401':
       description: Unauthorized
       content:
