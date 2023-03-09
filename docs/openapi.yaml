@@ -1139,7 +1139,6 @@ paths:
                     status: true,
                     message: "Delete data success"
                   }
-         $ref: '#/components/responses/204'
         '404':
           $ref: '#/components/responses/404'
         '401' :
