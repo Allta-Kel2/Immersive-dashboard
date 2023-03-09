@@ -1,7 +1,9 @@
 package service
 
 import (
+	"errors"
 	"immersiveApp/features/classes"
+	"immersiveApp/utils/helpers"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -31,6 +33,20 @@ func (s *ClassService) Create(classEntity classes.ClassEntity) (classes.ClassEnt
 	errValidate := s.validate.StructExcept(classEntity, "User")
 	if errValidate != nil {
 		return classes.ClassEntity{}, errValidate
+	}
+
+	dateStart, checkDateStart := helpers.IsDate(classEntity.DateStart)
+	if !checkDateStart {
+		return classes.ClassEntity{}, errors.New("not valid date start format date, ex : 2006-02-25")
+	}
+
+	dateGraduate, checkDateGraduate := helpers.IsDate(classEntity.DateGraduate)
+	if !checkDateGraduate {
+		return classes.ClassEntity{}, errors.New("not valid date graduate format date, ex : 2006-02-25")
+	}
+
+	if helpers.FormatDate(dateGraduate).Before(helpers.FormatDate(dateStart)) {
+		return classes.ClassEntity{}, errors.New("error range of date, date graduate must be after date start")
 	}
 
 	user_id, err := s.Data.Store(classEntity)
