@@ -5,6 +5,7 @@ import (
 	"immersiveApp/features/classes"
 	"immersiveApp/mocks"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -95,6 +96,7 @@ func TestDelete(t *testing.T) {
 	repo := mocks.NewClassDataInterface(t)
 
 	mockTeamEntity := classes.ClassEntity{
+		Id:           1,
 		ClassName:    "BE 15",
 		PicUserId:    1,
 		DateStart:    "2023-03-03",
@@ -118,36 +120,57 @@ func TestDelete(t *testing.T) {
 	})
 }
 
-func TestUpdate(t *testing.T) {}
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewClassDataInterface(t)
+	expected := classes.ClassEntity{
+		Id:           1,
+		ClassName:    "BE 15",
+		PicUserId:    1,
+		DateStart:    "2023-03-03",
+		DateGraduate: "2023-03-04",
+		CreatedAt:    time.Time{},
+		UpdatedAt:    time.Time{},
+	}
 
-// 	repo := mocks.NewTeamDataInterface(t)
-// 	expected := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team A",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	input := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team B",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	t.Run("Update success", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(input, nil).Once()
-// 		srv := New(repo)
+	input := classes.ClassEntity{
+		Id:           1,
+		ClassName:    "BE 15",
+		PicUserId:    1,
+		DateStart:    "2023-03-03",
+		DateGraduate: "2023-03-04",
+		CreatedAt:    time.Time{},
+		UpdatedAt:    time.Time{},
+	}
 
-// 		res, err := srv.Update(input, 1)
-// 		assert.Nil(t, err)
-// 		assert.NotEmpty(t, res)
-// 		repo.AssertExpectations(t)
-// 	})
-// 	t.Run("Update Fail", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(tims.TeamEntity{}, errors.New("error update")).Once()
-// 		srv := New(repo)
-// 		res, err := srv.Update(input, 0)
-// 		assert.Empty(t, res)
-// 		assert.NotNil(t, err)
-// 		repo.AssertExpectations(t)
-// 	})
-// }
+	mockTeamEntity := classes.ClassEntity{
+		ClassName:    "BE 15",
+		PicUserId:    1,
+		DateStart:    "2023-03-03",
+		DateGraduate: "2023-03-04",
+	}
+
+	t.Run("Update success", func(t *testing.T) {
+		repo.On("Update", expected, 1).Return(input, nil).Once()
+		srv := New(repo)
+
+		res, err := srv.Update(input, 1)
+		assert.Nil(t, err)
+		assert.NotEmpty(t, res)
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("error", func(t *testing.T) {
+		srv := New(repo)
+		_, err := srv.Update(mockTeamEntity, 0)
+		assert.NotEmpty(t, err)
+		assert.NotNil(t, err)
+		repo.AssertExpectations(t)
+	})
+	t.Run("Update Fail", func(t *testing.T) {
+		srv := New(repo)
+		res, err := srv.Update(input, 0)
+		assert.Empty(t, res)
+		assert.NotNil(t, err)
+		repo.AssertExpectations(t)
+	})
+}
