@@ -5,6 +5,7 @@ import (
 	tims "immersiveApp/features/teams"
 	"immersiveApp/mocks"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -104,36 +105,45 @@ func TestDelete(t *testing.T) {
 	})
 }
 
-func TestUpdate(t *testing.T) {}
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewTeamDataInterface(t)
+	expected := tims.TeamEntity{
+		Id:        1,
+		Name:      "team A",
+		CreatedAt: time.Time{},
+		UpdatedAt: time.Time{},
+	}
+	input := tims.TeamEntity{
+		Id:        1,
+		Name:      "team B",
+		CreatedAt: time.Time{},
+		UpdatedAt: time.Time{},
+	}
+	mockTeamEntity := tims.TeamEntity{
+		Name: "Team A",
+	}
+	t.Run("Update success", func(t *testing.T) {
+		repo.On("Update", expected, 1).Return(input, nil).Once()
+		srv := New(repo)
 
-// 	repo := mocks.NewTeamDataInterface(t)
-// 	expected := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team A",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	input := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team B",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	t.Run("Update success", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(input, nil).Once()
-// 		srv := New(repo)
+		res, err := srv.Update(input, 1)
+		assert.Nil(t, err)
+		assert.NotEmpty(t, res)
+		repo.AssertExpectations(t)
+	})
 
-// 		res, err := srv.Update(input, 1)
-// 		assert.Nil(t, err)
-// 		assert.NotEmpty(t, res)
-// 		repo.AssertExpectations(t)
-// 	})
-// 	t.Run("Update Fail", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(tims.TeamEntity{}, errors.New("error update")).Once()
-// 		srv := New(repo)
-// 		res, err := srv.Update(input, 0)
-// 		assert.Empty(t, res)
-// 		assert.NotNil(t, err)
-// 		repo.AssertExpectations(t)
-// 	})
-// }
+	t.Run("eror", func(t *testing.T) {
+		srv := New(repo)
+		_, err := srv.Update(mockTeamEntity, 0)
+		assert.NotEmpty(t, err)
+		assert.NotNil(t, err)
+		repo.AssertExpectations(t)
+	})
+	t.Run("Update Fail", func(t *testing.T) {
+		srv := New(repo)
+		res, err := srv.Update(input, 0)
+		assert.Empty(t, res)
+		assert.NotNil(t, err)
+		repo.AssertExpectations(t)
+	})
+}
