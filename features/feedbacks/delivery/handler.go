@@ -20,7 +20,7 @@ func New(srv feedbacks.FeedbackServiceInterface) *FeedbackHandler {
 	}
 }
 
-//not used
+// not used
 func (f *FeedbackHandler) GetAll(c echo.Context) error {
 	feedbackEntity, err := f.Service.GetAll()
 	if err != nil {
@@ -30,7 +30,7 @@ func (f *FeedbackHandler) GetAll(c echo.Context) error {
 	return c.JSON(http.StatusOK, helpers.ResponseSuccess("all feedback", listFeedbackResponse))
 }
 
-//not used
+// not used
 func (f *FeedbackHandler) GetById(c echo.Context) error {
 	_id, _ := strconv.Atoi(c.Param("id"))
 	id := uint(_id)

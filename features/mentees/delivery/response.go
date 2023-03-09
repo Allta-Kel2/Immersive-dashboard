@@ -1,5 +1,10 @@
 package delivery
 
+import (
+	// "immersiveApp/features/feedbacks"
+	// "immersiveApp/features/mentees"
+)
+
 type MenteeResponse struct {
 	Id              uint   `json:"id"`
 	ClassId         uint   `json:"class_id"`
@@ -20,3 +25,8 @@ type MenteeResponse struct {
 	EmergencyPhone  string `json:"emergency_phone"`
 	EmergencyStatus string `json:"emergency_status"`
 }
+
+// type Result struct {
+// 	mentees.MenteeEntity
+// 	feedbacks.FeedbackEntity
+// }

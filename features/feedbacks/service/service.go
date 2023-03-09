@@ -27,7 +27,7 @@ func (s *feedbackService) GetById(id uint) (feedbacks.FeedbackEntity, error) {
 }
 
 func (s *feedbackService) Create(feedbackEntity feedbacks.FeedbackEntity) (feedbacks.FeedbackEntity, error) {
-	errValidate := s.validate.Struct(feedbackEntity)
+	errValidate := s.validate.StructExcept(feedbackEntity, "User", "Status")
 	if errValidate != nil {
 		return feedbacks.FeedbackEntity{}, errValidate
 	}
