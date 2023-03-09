@@ -1,27 +1,43 @@
 package service
 
-import "immersiveApp/features/mentees"
+import (
+	"immersiveApp/features/mentees"
 
-type menteeService struct {
-	Data mentees.MenteeDataInterface
+	"github.com/go-playground/validator/v10"
+)
+
+type MenteeService struct {
+	Data     mentees.MenteeDataInterface
+	validate *validator.Validate
 }
 
 func New(data mentees.MenteeDataInterface) mentees.MenteeServiceInterface {
-	return &menteeService{
-		Data: data,
+	return &MenteeService{
+		Data:     data,
+		validate: validator.New(),
 	}
 }
 
-func (s *menteeService) GetAll() ([]mentees.MenteeEntity, error) {
+func (s *MenteeService) GetAll() ([]mentees.MenteeEntity, error) {
 	return s.Data.SelectAll()
 }
 
-func (s *menteeService) GetById(id uint) (mentees.MenteeEntity, error) {
+func (s *MenteeService) GetById(id uint) (mentees.MenteeEntity, error) {
 	return s.Data.SelectById(id)
 }
 
-func (s *menteeService) Create(mentee mentees.MenteeEntity) (mentees.MenteeEntity, error) {
-	user_id, err := s.Data.Insert(mentee)
+func (s *MenteeService) GetFeedbackById(id uint) (any, error) {
+	return s.Data.SelectFeedbackById(id)
+}
+
+func (s *MenteeService) Create(menteeEntity mentees.MenteeEntity) (mentees.MenteeEntity, error) {
+	s.validate = validator.New()
+	errValidate := s.validate.StructExcept(menteeEntity, "Class", "Status")
+	if errValidate != nil {
+		return mentees.MenteeEntity{}, errValidate
+	}
+
+	user_id, err := s.Data.Store(menteeEntity)
 	if err != nil {
 		return mentees.MenteeEntity{}, err
 	}
@@ -29,23 +45,22 @@ func (s *menteeService) Create(mentee mentees.MenteeEntity) (mentees.MenteeEntit
 	return s.Data.SelectById(user_id)
 }
 
-func (s *menteeService) Update(mentee mentees.MenteeEntity, id uint) (mentees.MenteeEntity, error) {
+func (s *MenteeService) Update(menteeEntity mentees.MenteeEntity, id uint) (mentees.MenteeEntity, error) {
 	if checkDataExist, err := s.Data.SelectById(id); err != nil {
 		return checkDataExist, err
 	}
 
-	err := s.Data.Edit(mentee, id)
+	err := s.Data.Edit(menteeEntity, id)
 	if err != nil {
 		return mentees.MenteeEntity{}, err
 	}
-
 	return s.Data.SelectById(id)
 }
 
-func (s *menteeService) Delete(id uint) error {
+func (s *MenteeService) Delete(id uint) error {
 	if _, err := s.Data.SelectById(id); err != nil {
 		return err
 	}
 
-	return s.Data.Remove(id)
+	return s.Data.Destroy(id)
 }
