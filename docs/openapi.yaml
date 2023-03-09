@@ -954,14 +954,8 @@ paths:
                         "start_date": "2022-06-10",
                         "graduate_date": "2022-08-30",
                         "user" : {
-                          "id": 1,
-                          "team_id": 1,
                           "full_name": "hahhaha",
                           "email": "findryan@gmail.com",
-                          "role": "admin",
-                          "status": false,
-                          "phone_number": "",
-                          "address": "madiun"
                         }
                       },
                       {
@@ -971,14 +965,8 @@ paths:
                         "start_date": "2022-06-10",
                         "graduate_date": "2022-08-30",
                         "user" : {
-                          "id": 2,
-                          "team_id": 1,
                           "full_name": "hahhaha",
-                          "email": "findryan@gmail.com",
-                          "role": "admin",
-                          "status": false,
-                          "phone_number": "",
-                          "address": "madiun"
+                          "email": "findryan2@gmail.com",
                         }
                       }
                     ]

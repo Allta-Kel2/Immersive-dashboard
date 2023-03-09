@@ -2,7 +2,6 @@ package delivery
 
 import (
 	"immersiveApp/features/classes"
-	"immersiveApp/features/users/delivery"
 	"reflect"
 )
 
@@ -25,15 +24,9 @@ func ClassEntityToClassResponse(classEntity classes.ClassEntity) ClassResponse {
 	}
 
 	if !reflect.ValueOf(classEntity.User).IsZero() {
-		result.User = &delivery.UserResponse{
-			Id:          classEntity.Id,
-			TeamId:      classEntity.User.TeamId,
-			FullName:    classEntity.User.FullName,
-			Email:       classEntity.User.Email,
-			Role:        classEntity.User.Role,
-			Status:      classEntity.User.Status,
-			PhoneNumber: classEntity.User.PhoneNumber,
-			Address:     classEntity.User.Address,
+		result.User = UserResponse{
+			FullName: classEntity.User.FullName,
+			Email:    classEntity.User.Email,
 		}
 	}
 
