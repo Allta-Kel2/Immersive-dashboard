@@ -157,7 +157,6 @@ func TestDelete(t *testing.T) {
 	})
 	t.Run("Gagal Delete", func(t *testing.T) {
 		repo.On("SelectById", uint(1)).Return(input, nil)
-
 		srv := New(repo)
 		err := srv.Delete(uint(0))
 		assert.NotNil(t, err)
