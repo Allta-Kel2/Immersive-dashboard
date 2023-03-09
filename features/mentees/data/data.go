@@ -2,6 +2,7 @@ package data
 
 import (
 	"immersiveApp/features/mentees"
+
 	"gorm.io/gorm"
 )
 
@@ -25,14 +26,25 @@ func (q *query) SelectAll() ([]mentees.MenteeEntity, error) {
 
 func (q *query) SelectById(id uint) (mentees.MenteeEntity, error) {
 	var mentee Mentee
-	if err := q.db.First(&mentee, id); err.Error != nil {
+	if err := q.db.Preload("Feedbacks").First(&mentee, id); err.Error != nil {
 		return mentees.MenteeEntity{}, err.Error
 	}
 	return MenteeToMenteeEntity(mentee), nil
 }
 
-func (q *query) Insert(menteeEntity mentees.MenteeEntity) (uint, error) {
-	mentee := MenteeEntitytoClass(menteeEntity)
+func (q *query) SelectFeedbackById(id uint) (any, error) {
+	var mentee Mentee
+	// que := q.db.Preload("Feedbacks", "mentee_id = ?", id).Where("id = ?", id).Find(&mentee)
+	que := q.db.Preload("Feedbacks").First(&mentee, id)
+	if err := que; err.Error != nil {
+		return mentees.MenteeEntity{}, err.Error
+	}
+	// return MenteeToMenteeEntity(mentee), nil
+	return mentee, nil
+}
+
+func (q *query) Store(menteeEntity mentees.MenteeEntity) (uint, error) {
+	mentee := MenteeEntityToMentee(menteeEntity)
 	if err := q.db.Create(&mentee); err.Error != nil {
 		return 0, err.Error
 	}
@@ -40,14 +52,14 @@ func (q *query) Insert(menteeEntity mentees.MenteeEntity) (uint, error) {
 }
 
 func (q *query) Edit(menteeEntity mentees.MenteeEntity, id uint) error {
-	mentee := MenteeEntitytoClass(menteeEntity)
+	mentee := MenteeEntityToMentee(menteeEntity)
 	if err := q.db.Where("id", id).Updates(&mentee); err.Error != nil {
 		return err.Error
 	}
 	return nil
 }
 
-func (q *query) Remove(id uint) error {
+func (q *query) Destroy(id uint) error {
 	var mentee Mentee
 	if err := q.db.Delete(&mentee, id); err.Error != nil {
 		return err.Error

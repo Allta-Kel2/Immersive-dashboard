@@ -2,7 +2,7 @@ package data
 
 import (
 	"immersiveApp/features/feedbacks"
-	"immersiveApp/features/mentees"
+	// "immersiveApp/features/mentees"
 	"immersiveApp/features/statuses"
 	"immersiveApp/features/users"
 	"reflect"
@@ -31,20 +31,32 @@ func FeedbackToFeedbackEntity(feedback Feedback) feedbacks.FeedbackEntity {
 		CreatedAt: feedback.CreatedAt,
 		UpdatedAt: feedback.UpdatedAt,
 	}
-	if !reflect.ValueOf(feedback).IsZero() {
+
+	u := reflect.ValueOf(feedback.User)
+	// m := reflect.ValueOf(feedback.Mentee)
+	s := reflect.ValueOf(feedback.Status)
+
+	if !u.IsZero() {
 		result.User = users.UserEntity{
 			Id:       feedback.User.ID,
-			// FullName: feedback.User.FullName,
-		}
-		result.Mentee = mentees.MenteeEntity{
-			Id:       feedback.Mentee.ID,
-			// FullName: feedback.Mentee.FullName,
-		}
-		result.Status = statuses.StatusEntity{
-			Id: feedback.Status.ID,
-			// Name: feedback.Status.Name,
+			FullName: feedback.User.FullName,
 		}
 	}
+
+	// if !m.IsZero() {
+	// 	result.Mentee = mentees.MenteeEntity{
+	// 		Id:       feedback.Mentee.ID,
+	// 		FullName: feedback.Mentee.FullName,
+	// 	}
+	// }
+
+	if !s.IsZero() {
+		result.Status = statuses.StatusEntity{
+			Id: feedback.Status.ID,
+			Name: feedback.Status.Name,
+		}
+	}
+
 	return result
 }
 
