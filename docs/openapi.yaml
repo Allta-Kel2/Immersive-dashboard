@@ -5,6 +5,9 @@ info:
   description: An API for managing teams.
 
 paths:
+####################################
+#  AUTH
+####################################
   /auth/login:
     post:
       tags:
@@ -104,6 +107,10 @@ paths:
           $ref: '#/components/responses/401'
         '500' :
           $ref: '#/components/responses/500'
+
+####################################
+#  USERS
+####################################
 
   /users:
     get:
@@ -301,6 +308,10 @@ paths:
           $ref: '#/components/responses/401'
         '500' :
           $ref: '#/components/responses/500'
+
+####################################
+#  MENTEE
+####################################
 
   /mentees:
     get:
@@ -599,6 +610,10 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
+####################################
+#  FEEDBACK
+####################################
+
   /feedbacks:
     post: 
       tags:
@@ -712,6 +727,10 @@ paths:
           $ref: '#/components/responses/404'
         '500':
           $ref: '#/components/responses/500'
+
+####################################
+#  TEAM
+####################################
 
   /teams:
     get:
@@ -895,9 +914,9 @@ paths:
         '500' :
           $ref: '#/components/responses/500'
 
-  ####################################
-  #  CLASS
-  ####################################
+####################################
+#  CLASS
+####################################
 
   /classes:
     get:
@@ -1004,7 +1023,6 @@ paths:
                   }
         '500' :
           $ref: '#/components/responses/500'
-
   /classes/{id}:
     parameters:
       - in: path
@@ -1131,6 +1149,7 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: "use Token"
+
   schemas:
     User:
       type: object
@@ -1144,7 +1163,7 @@ components:
           type: string
         password:
           type: string
-        phone:
+        phone_number:
           type: string
         address:
           type: string
@@ -1171,14 +1190,6 @@ components:
         created_at:
           type: string
           format: date-time
-
-    ResponseWithoutData:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
  
     Team:
       type: object
@@ -1244,6 +1255,175 @@ components:
           format: date-time
           description: The date and time the team was deleted
 
+    Feedback:
+      type: object
+      required:
+        - notes
+        - proof
+        - user_id
+        - mentee_id
+        - status_id
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the feedback
+        notes:
+          type: string
+          description: The name of the notes
+        proof:
+          type: string
+          description: The name of the proof
+        user_id:
+          type: integer
+          format: int64
+          description: The ID of the users
+        mentee_id:
+          type: integer
+          format: int64
+          description: The ID of the mentee
+        status_id:
+          type: integer
+          format: int64
+          description: The ID of the status
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the team was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time the team was last updated
+        deleted_at:
+          type: string
+          format: date-time
+          description: The date and time the team was deleted
+
+    Mentee:
+      type: object
+      required:
+        - class_id
+        - full_name
+        - nick_name
+        - email
+        - phone
+        - current_address
+        - home_address
+        - telegram
+        - status_id
+        - gender
+        - education_type
+        - major
+        - graduate
+        - institution
+        - emergency_name
+        - emergency_phone
+        - emergency_status
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the feedback
+        class_id:
+          type: integer
+          format: int64
+          description: The ID of the users
+        full_name:
+          type: string
+          description: The name of the full name
+        nick_name:
+          type: string
+          description: The name of the nick name
+        email:
+          type: string
+          description: email
+        phone:
+          type: string
+          description: phone
+        current_address:
+          type: string
+          description: current_address
+        home_address:
+          type: string
+          description: home_address
+        telegram:
+          type: string
+          description: telegram
+        status_id:
+          type: integer
+          format: int64
+          description: The ID of the status
+        gender:
+          type: string
+          description: gender
+        education_type:
+          type: string
+          description: education_type
+        major:
+          type: string
+          description: major
+        graduate:
+          type: string
+          description: graduate
+        institution:
+          type: string
+          description: institution
+        emergency_name:
+          type: string
+          description: emergency_name
+        emergency_phone:
+          type: string
+          description: emergency_phone
+        emergency_status:
+          type: string
+          description: emergency_status
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the team was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time the team was last updated
+        deleted_at:
+          type: string
+          format: date-time
+          description: The date and time the team was deleted
+
+    Status:
+      type: object
+      required:
+        - name
+        - parent_id
+        - description
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the Status
+        name:
+          type: string
+          description: The name of the Status
+        parent_id:
+          type: integer
+          format: int64
+          description: The ID of the Status which have be parent
+        description:
+          type: string
+          description: description
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the team was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time the team was last updated
+        deleted_at:
+          type: string
+          format: date-time
+          description: The date and time the team was deleted
+    
   responses:
     '404':
       description: Not Found
@@ -1251,7 +1431,11 @@ components:
         application/json:
           schema:
             type: object
-            $ref: '#/components/schemas/ResponseWithoutData'
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
           example:
             status: false
             message: "data not found"
@@ -1262,7 +1446,11 @@ components:
         application/json:
           schema:
             type: object
-            $ref: '#/components/schemas/ResponseWithoutData'
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
           example:
             status: false
             message: "request does not contain a valid token"
@@ -1273,12 +1461,15 @@ components:
         application/json:
           schema:
             type: object
-            $ref: '#/components/schemas/ResponseWithoutData'
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
           example:
             status: true
             message: "Delete data success"
             data : []
-
 
     '500':
       description: Internal Server Error
@@ -1286,7 +1477,11 @@ components:
         application/json:
           schema:
             type: object
-            $ref: '#/components/schemas/ResponseWithoutData'
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
           example:
             status: false
             message: "internal server error"
