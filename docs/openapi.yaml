@@ -157,11 +157,10 @@ paths:
               example:
                 full_name: "reza yuda"
                 email: "reza@mail.com"
-                id_team: 2
+                team_id: 2
                 password: "qwerty"
                 phone_number: "081234"
                 address: "pekanbaru"
-                status: "active"
                 role: "admin"
       responses:
         '201':
@@ -232,7 +231,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id_user
+        - name: user_id
           description: "id user"
           required: true
           in: path
@@ -248,7 +247,7 @@ paths:
               example:
                 full_name: "reza yuda"
                 email: "reza@mail.com"
-                id_team: 2
+                team_id: 2
                 phone_number: "081234"
                 address: "pekanbaru"
                 status: false
@@ -292,8 +291,8 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: "id_user"
-          description: "id_user"
+        - name: "user_id"
+          description: "user_id"
           required: true
           in: path
           schema:
@@ -436,7 +435,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /mentees/{id_mentee}:
+  /mentees/{id}:
     get: 
       tags:
         - Mentee
@@ -445,7 +444,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id_mentee
+        - name: mentee_id
           description: "id mentee"
           required: true
           in: path
@@ -499,7 +498,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id_mentee
+        - name: mentee_id
           description: "id mentee"
           required: true
           in: path
@@ -543,7 +542,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id_mentee
+        - name: mentee_id
           description: "id mentee"
           required: true
           in: path
@@ -565,7 +564,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /mentees/{id_mentee}/feedbacks:
+  /mentees/{id}/feedbacks:
     get: 
       tags:
         - Mentee
@@ -574,7 +573,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:  
-        - name: id_mentee
+        - name: mentee_id
           description: "id mentee"
           required: true
           in: path
@@ -592,7 +591,7 @@ paths:
               example:
                 message: "Sucess update profile"
                 data: 
-                  id_mentee: 1
+                  mentee_id: 1
                   nama: "Jerry"
                   feedback:
                     - id: 1
@@ -629,9 +628,9 @@ paths:
               example:  
                 notes: "Ini bagian notes untuk mentee yang bersangkutan 1"
                 proof: "https://images.app.goo.gl/t5b981L6oUTU3fE18"
-                id_user: 1
-                id_mentee: 1
-                id_status: 1
+                user_id: 1
+                mentee_id: 1
+                status_id: 1
       responses:
         '201':
           description: Register berhasil.
@@ -1425,21 +1424,6 @@ components:
           description: The date and time the team was deleted
     
   responses:
-    '404':
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: boolean
-              message:
-                type: string
-          example:
-            status: false
-            message: "data not found"
-
     '401':
       description: Unauthorized
       content:
@@ -1454,6 +1438,21 @@ components:
           example:
             status: false
             message: "request does not contain a valid token"
+
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
+          example:
+            status: false
+            message: "data not found"
 
     '204':
       description: Unauthorized
