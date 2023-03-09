@@ -1129,13 +1129,56 @@ paths:
       summary: Delete a team by ID
       responses:
         '204':
-          $ref: '#/components/responses/204'
+          description: The team was successfully deleted
+          content:
+            application/json:
+              examples:
+                teamData:
+                  description: "Delete team"
+                  value: {
+                    status: true,
+                    message: "Delete data success"
+                  }
+         $ref: '#/components/responses/204'
         '404':
           $ref: '#/components/responses/404'
         '401' :
           $ref: '#/components/responses/401'
         '500' :
           $ref: '#/components/responses/500'
+                  
+  /status/:
+    get:
+      tags:
+        - Status
+      summary: get status by name
+      description: Mencari status dengan nama
+      parameters:
+        - name: id_status
+          description: "id status"
+          required: false
+          in: query
+          schema:
+            type: string
+            example: "budi"
+  
+      responses:
+        '200':
+          description: A list of status
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  message: "success get all status"
+                  data:
+                    - id: 1
+                      name: "reza"
+                      description: "pass to unit 2"
+                      
+        '404':
+          $ref: '#/components/responses/404'
 
 ####################################
 #  COMPONENT
