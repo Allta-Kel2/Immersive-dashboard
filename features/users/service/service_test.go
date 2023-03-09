@@ -5,6 +5,7 @@ import (
 	"immersiveApp/features/users"
 	"immersiveApp/mocks"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -22,6 +23,8 @@ func TestCreate(t *testing.T) {
 		Address:     "pekanbaru",
 		Role:        "active",
 		Status:      false,
+		CreatedAt:   time.Time{},
+		UpdatedAt:   time.Time{},
 	}
 	srv := New(repo)
 
@@ -38,7 +41,8 @@ func TestCreate(t *testing.T) {
 	}
 
 	t.Run("success", func(t *testing.T) {
-		repo.On("Create", input2).Return(input2, nil)
+		repo.On("Store", input2).Return(uint(1), nil)
+		repo.On("SelectById", uint(1)).Return(input2, nil)
 		created, err := srv.Create(input2)
 
 		assert.NoError(t, err)
@@ -68,7 +72,7 @@ func TestCreate(t *testing.T) {
 		assert.EqualError(t, err, "data not found")
 		repo.AssertExpectations(t)
 	})
-	t.Run("StructExcept", func(t *testing.T) {
+	t.Run("eror", func(t *testing.T) {
 		_, err := srv.Create(mockinput)
 		assert.NotEmpty(t, err)
 		assert.NotNil(t, err)
