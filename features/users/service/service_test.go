@@ -7,12 +7,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestCreate(t *testing.T) {
 	repo := mocks.NewUserDataInterface(t)
-	input := users.UserEntity{
+
+	input2 := users.UserEntity{
 		Id:          uint(1),
 		TeamId:      1,
 		FullName:    "rischi",
@@ -28,31 +28,58 @@ func TestCreate(t *testing.T) {
 	mockinput := users.UserEntity{
 		Id:          uint(2),
 		TeamId:      1,
-		FullName:    "",
-		Email:       "",
-		Password:    "",
-		PhoneNumber: "",
-		Address:     "",
-		Role:        "",
+		FullName:    "a",
+		Email:       "a@mail",
+		Password:    "a",
+		PhoneNumber: "123",
+		Address:     "a",
+		Role:        "arole",
 		Status:      false,
 	}
-	t.Run("succes", func(t *testing.T) {
-		repo.On("Store", input).Return(uint(1), nil)
-		repo.On("SelectById", uint(1)).Return(input, nil)
 
-		created, err := srv.Create(input)
+	t.Run("success", func(t *testing.T) {
+		repo.On("Create", input2).Return(input2, nil)
+		created, err := srv.Create(input2)
 
 		assert.NoError(t, err)
-		assert.Equal(t, input, created)
-
+		assert.Equal(t, input2, created)
 		repo.AssertExpectations(t)
 	})
 
-	t.Run("eror", func(t *testing.T) {
+	t.Run("data not found", func(t *testing.T) {
+		mockinput := users.UserEntity{
+			Id:          uint(2),
+			TeamId:      1,
+			FullName:    "",
+			Email:       "",
+			Password:    "",
+			PhoneNumber: "",
+			Address:     "",
+			Role:        "",
+			Status:      false,
+		}
+		email := "riau@gmail.com"
+		repo.On("Login", email).Return(users.UserEntity{}, errors.New("data not found"))
+
+		srv := New(repo)
+		created, err := srv.Create(mockinput)
+
+		assert.Empty(t, created)
+		assert.EqualError(t, err, "data not found")
+		repo.AssertExpectations(t)
+	})
+	t.Run("StructExcept", func(t *testing.T) {
 		_, err := srv.Create(mockinput)
 		assert.NotEmpty(t, err)
 		assert.NotNil(t, err)
 		repo.AssertExpectations(t)
+	})
+	t.Run("role option only : admin and user", func(t *testing.T) {
+
+		_, err := srv.Create(input2)
+
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "role option only : admin and user")
 	})
 }
 
@@ -112,7 +139,6 @@ func TestDelete(t *testing.T) {
 	repo := mocks.NewUserDataInterface(t)
 	input := users.UserEntity{
 		Id:          uint(1),
-		TeamId:      1,
 		FullName:    "rischi",
 		Email:       "rischi@mail",
 		Password:    "12345",
@@ -122,53 +148,72 @@ func TestDelete(t *testing.T) {
 		Status:      false,
 	}
 	t.Run("Sukses Delete", func(t *testing.T) {
-		repo.On("Delete", mock.Anything).Return(input, nil).Once()
+		repo.On("Delete", uint(1)).Return(users.UserEntity{}, nil).Once()
+		repo.On("SelectById", uint(1)).Return(input, nil)
 		srv := New(repo)
 		err := srv.Delete(1)
 		assert.Nil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 	t.Run("Gagal Delete", func(t *testing.T) {
-		repo.On("Delete", mock.Anything).Return(input, errors.New("error")).Once()
+		repo.On("SelectById", uint(1)).Return(input, nil)
+
 		srv := New(repo)
-		err := srv.Delete(1)
+		err := srv.Delete(uint(0))
 		assert.NotNil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 }
 
-func TestUpdate(t *testing.T) {}
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewUserDataInterface(t)
 
-// 	repo := mocks.NewTeamDataInterface(t)
-// 	expected := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team A",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	input := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team B",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	t.Run("Update success", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(input, nil).Once()
-// 		srv := New(repo)
+	input := users.UserEntity{
+		Id:          uint(1),
+		FullName:    "rischi",
+		Email:       "rischi@mail",
+		Password:    "12345",
+		PhoneNumber: "08123",
+		Address:     "pekanbaru",
+		Role:        "user",
+		Status:      true,
+	}
+	updatedData := users.UserEntity{
+		Id:          1,
+		FullName:    "rischi update",
+		Email:       "rischi@mail",
+		Password:    "12345",
+		PhoneNumber: "08123",
+		Address:     "pekanbaru",
+		Role:        "user",
+		Status:      true,
+	}
+	t.Run("sukses update data", func(t *testing.T) {
+		repo.On("Update", uint(1), input).Return(updatedData, nil).Once()
 
-// 		res, err := srv.Update(input, 1)
-// 		assert.Nil(t, err)
-// 		assert.NotEmpty(t, res)
-// 		repo.AssertExpectations(t)
-// 	})
-// 	t.Run("Update Fail", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(tims.TeamEntity{}, errors.New("error update")).Once()
-// 		srv := New(repo)
-// 		res, err := srv.Update(input, 0)
-// 		assert.Empty(t, res)
-// 		assert.NotNil(t, err)
-// 		repo.AssertExpectations(t)
-// 	})
-// }
+		s := &userService{Data: repo}
+
+		updated, err := s.Update(updatedData, input.Id)
+
+		assert.Nil(t, err)
+		assert.Equal(t, updatedData, updated)
+	})
+	t.Run("data tidak ditemukan", func(t *testing.T) {
+		repo.On("Update", uint(5), input).Return(updatedData, errors.New("data not found")).Once()
+
+		service := New(repo)
+		res, err := service.Update(updatedData, input.Id)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "tidak ditemukan")
+		assert.Equal(t, uint(0), res.Id)
+		repo.AssertExpectations(t)
+	})
+	t.Run("eror", func(t *testing.T) {
+		service := New(repo)
+		_, err := service.Update(updatedData, input.Id)
+
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "eror")
+	})
+
+}
