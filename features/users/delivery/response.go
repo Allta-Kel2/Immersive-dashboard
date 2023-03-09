@@ -24,7 +24,7 @@ func UserEntityToUserResponse(userEntity users.UserEntity) UserResponse {
 		TeamId:      userEntity.TeamId,
 		FullName:    userEntity.FullName,
 		Email:       userEntity.Email,
-		Role:        userEntity.Team.Name,
+		Role:        userEntity.Role,
 		Status:      userEntity.Status,
 		PhoneNumber: userEntity.PhoneNumber,
 		Address:     userEntity.Address,
