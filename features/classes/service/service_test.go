@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"immersiveApp/features/classes"
 	"immersiveApp/mocks"
 	"testing"
@@ -104,18 +103,17 @@ func TestDelete(t *testing.T) {
 	}
 	t.Run("Sukses Delete", func(t *testing.T) {
 		repo.On("Delete", mock.Anything).Return(mockTeamEntity, nil).Once()
+		repo.On("SelectById", uint(1)).Return(mockTeamEntity, nil)
 		srv := New(repo)
 		err := srv.Delete(1)
 		assert.Nil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 	t.Run("Gagal Delete", func(t *testing.T) {
-		repo.On("Delete", mock.Anything).Return(mockTeamEntity, errors.New("error")).Once()
+		repo.On("SelectById", uint(1)).Return(mockTeamEntity, nil)
 		srv := New(repo)
 		err := srv.Delete(1)
 		assert.NotNil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 }
