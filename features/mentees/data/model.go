@@ -4,6 +4,8 @@ import (
 	c "immersiveApp/features/classes/data"
 	s "immersiveApp/features/statuses/data"
 
+	d "immersiveApp/features/feedbacks/data"
+
 	"gorm.io/gorm"
 )
 
@@ -28,4 +30,11 @@ type Mentee struct {
 	EmergencyName   string
 	EmergencyPhone  string
 	EmergencyStatus string
+	Feedbacks       *[]d.Feedback `gorm:"foreignKey:MenteeId"`
 }
+
+// // type MenteeAndFeedback
+// type Result struct {
+// 	mentees.MenteeEntity
+// 	feedbacks.FeedbackEntity
+// }

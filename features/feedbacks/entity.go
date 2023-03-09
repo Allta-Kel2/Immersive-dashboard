@@ -1,23 +1,21 @@
 package feedbacks
 
 import (
-	"immersiveApp/features/mentees"
 	"immersiveApp/features/statuses"
 	"immersiveApp/features/users"
 	"time"
 )
 
 type FeedbackEntity struct {
-	Id       uint
-	Notes    string
-	Proof    string
-	UserId   uint
-	User     users.UserEntity
-	MenteeId uint
-	Mentee   mentees.MenteeEntity
-	StatusId uint
-	Status   statuses.StatusEntity
-	Approved bool
+	Id        uint
+	Notes     string `validate:"required"`
+	Proof     string `validate:"required"`
+	UserId    uint
+	User      users.UserEntity
+	MenteeId  uint
+	StatusId  uint
+	Status    statuses.StatusEntity
+	Approved  bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

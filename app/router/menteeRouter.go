@@ -18,6 +18,7 @@ func MenteeRouter(db *gorm.DB, e *echo.Echo) {
 	g := e.Group("/mentees")
 	g.Use(middlewares.Authentication)
 	g.GET("", handler.GetAll)
+	g.GET("/:id/feedbacks", handler.GetFeedbackById)
 	g.GET("/:id", handler.GetById)
 	g.POST("", handler.Create)
 	g.PUT("/:id", handler.Update)

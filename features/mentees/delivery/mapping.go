@@ -24,7 +24,7 @@ func MenteeRequestToMenteeEntity(menteeRequest *MenteeRequest) mentees.MenteeEnt
 	}
 }
 
-func MenteeEntitytoMenteeResponse(menteeEntity mentees.MenteeEntity) MenteeResponse {
+func MenteeEntityToMenteeResponse(menteeEntity mentees.MenteeEntity) MenteeResponse {
 	return MenteeResponse{
 		Id:              menteeEntity.Id,
 		ClassId:         menteeEntity.ClassId,
@@ -47,10 +47,12 @@ func MenteeEntitytoMenteeResponse(menteeEntity mentees.MenteeEntity) MenteeRespo
 	}
 }
 
-func ListMenteeToMenteeResponse(dataCore []mentees.MenteeEntity) []MenteeResponse {
+// func ListMenteeFeedback
+
+func ListMenteeEntityToMenteeResponse(dataCore []mentees.MenteeEntity) []MenteeResponse {
 	var dataResponse []MenteeResponse
 	for _, v := range dataCore {
-		dataResponse = append(dataResponse, MenteeEntitytoMenteeResponse(v))
+		dataResponse = append(dataResponse, MenteeEntityToMenteeResponse(v))
 	}
 	return dataResponse
 }
