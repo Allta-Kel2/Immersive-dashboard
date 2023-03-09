@@ -33,7 +33,7 @@ git@github.com:Allta-Kel2/Immersive-dashboard.git
 4. Login untuk dapat menggunakan semua fitur yang tersedia
 
 ## *Entity Relational Database*
-
+![contoh](./dokumentasi/ERD.png)
 ## 
 <h3 align="Left">Programming Language :</h3>
 <p align="Left"> 
