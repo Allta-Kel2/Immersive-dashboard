@@ -9,8 +9,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestGetAll(t *testing.T) {
-
+func TestStatus(t *testing.T) {
 	repo := mocks.NewStatusDataInterface(t)
 	expectedData := []statuses.StatusEntity{
 		{
@@ -22,6 +21,7 @@ func TestGetAll(t *testing.T) {
 			Name: "Status 2",
 		},
 	}
+
 	t.Run("Sukses lihat status", func(t *testing.T) {
 		repo.On("SelectAll", mock.Anything).Return(expectedData, nil).Once()
 		srv := New(repo)
