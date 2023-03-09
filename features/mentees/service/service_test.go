@@ -176,7 +176,75 @@ func TestGetFeedbackById(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
+	repo := mocks.NewMenteeDataInterface(t)
 
+	input := mentees.MenteeEntity{
+		Id:              uint(1),
+		ClassId:         1,
+		FullName:        "meong milanium",
+		NickName:        "meong",
+		Email:           "miyong@mail",
+		Phone:           "089765",
+		CurrentAddress:  "jl. sesama",
+		HomeAddress:     "malang",
+		Telegram:        "youma",
+		StatusId:        1,
+		Gender:          "L",
+		EducationType:   "non-informatics",
+		Major:           "DKV",
+		Graduate:        "1040",
+		Institution:     "UniGa",
+		EmergencyName:   "Jola",
+		EmergencyPhone:  "089890",
+		EmergencyStatus: "Kakek",
+	}
+	updatedData := mentees.MenteeEntity{
+		Id:              uint(1),
+		ClassId:         1,
+		FullName:        "meong milanium",
+		NickName:        "meong",
+		Email:           "miyong@mail",
+		Phone:           "089765",
+		CurrentAddress:  "jl. sesama",
+		HomeAddress:     "malang",
+		Telegram:        "youma",
+		StatusId:        1,
+		Gender:          "L",
+		EducationType:   "non-informatics",
+		Major:           "DKV",
+		Graduate:        "1040",
+		Institution:     "UniGa",
+		EmergencyName:   "Jola",
+		EmergencyPhone:  "089890",
+		EmergencyStatus: "Kakek",
+	}
+	t.Run("sukses update data", func(t *testing.T) {
+		repo.On("Update", uint(1), input).Return(updatedData, nil).Once()
+
+		s := &MenteeService{Data: repo}
+
+		updated, err := s.Update(updatedData, input.Id)
+
+		assert.Nil(t, err)
+		assert.Equal(t, updatedData, updated)
+	})
+	t.Run("data tidak ditemukan", func(t *testing.T) {
+		repo.On("Update", uint(3), input).Return(updatedData, errors.New("data not found")).Once()
+
+		service := New(repo)
+		res, err := service.Update(updatedData, input.Id)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "tidak ditemukan")
+		assert.Equal(t, uint(0), res.Id)
+		repo.AssertExpectations(t)
+	})
+	t.Run("eror", func(t *testing.T) {
+		service := New(repo)
+		_, err := service.Update(updatedData, input.Id)
+
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "eror")
+	})
 }
 
 func TestDelete(t *testing.T) {
@@ -203,18 +271,17 @@ func TestDelete(t *testing.T) {
 	}
 	t.Run("Sukses Delete", func(t *testing.T) {
 		repo.On("Delete", mock.Anything).Return(input, nil).Once()
+		repo.On("SelectById", uint(1)).Return(input, nil)
 		srv := New(repo)
 		err := srv.Delete(1)
 		assert.Nil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 	t.Run("Gagal Delete", func(t *testing.T) {
-		repo.On("Delete", mock.Anything).Return(input, errors.New("error")).Once()
+		repo.On("SelectById", uint(1)).Return(input, nil)
 		srv := New(repo)
-		err := srv.Delete(1)
+		err := srv.Delete(uint(0))
 		assert.NotNil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 }

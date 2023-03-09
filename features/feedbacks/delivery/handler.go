@@ -12,6 +12,7 @@ import (
 
 type FeedbackHandler struct {
 	Service feedbacks.FeedbackServiceInterface
+	
 }
 
 func New(srv feedbacks.FeedbackServiceInterface) *FeedbackHandler {

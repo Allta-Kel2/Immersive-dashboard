@@ -83,12 +83,12 @@ func TestGetById(t *testing.T) {
 	repo := mocks.NewFeedbackDataInterface(t)
 	input := feedbacks.FeedbackEntity{
 		Id:        uint(1),
-		Notes:     "",
-		Proof:     "",
-		UserId:    0,
-		MenteeId:  0,
-		StatusId:  0,
-		Approved:  false,
+		Notes:     "ini notes",
+		Proof:     "ini bukti",
+		UserId:    1,
+		MenteeId:  1,
+		StatusId:  1,
+		Approved:  true,
 	}
 
 	repo.On("SelectById", input.Id).Return(input, nil)
@@ -105,20 +105,20 @@ func TestDelete(t *testing.T) {
 	repo := mocks.NewFeedbackDataInterface(t)
 	input := feedbacks.FeedbackEntity{
 		Id:        uint(1),
-		Notes:     "",
-		Proof:     "",
-		UserId:    0,
-		MenteeId:  0,
-		StatusId:  0,
-		Approved:  false,
+		Notes:     "ini notes",
+		Proof:     "ini bukti",
+		UserId:    1,
+		MenteeId:  3,
+		StatusId:  1,
+		Approved:  true,
 
 	}
 	t.Run("Sukses Delete", func(t *testing.T) {
 		repo.On("Delete", mock.Anything).Return(input, nil).Once()
+		repo.On("SelectById", uint(1)).Return(input, nil)
 		srv := New(repo)
 		err := srv.Delete(1)
 		assert.Nil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 	t.Run("Gagal Delete", func(t *testing.T) {
@@ -126,41 +126,57 @@ func TestDelete(t *testing.T) {
 		srv := New(repo)
 		err := srv.Delete(1)
 		assert.NotNil(t, err)
-		assert.NotEmpty(t, err)
 		repo.AssertExpectations(t)
 	})
 }
 
-func TestUpdate(t *testing.T) {}
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewFeedbackDataInterface(t)
 
-// 	repo := mocks.NewTeamDataInterface(t)
-// 	expected := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team A",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	input := tims.TeamEntity{
-// 		Id:        1,
-// 		Name:      "team B",
-// 		CreatedAt: time.Time{},
-// 		UpdatedAt: time.Time{},
-// 	}
-// 	t.Run("Update success", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(input, nil).Once()
-// 		srv := New(repo)
+	input := feedbacks.FeedbackEntity{
+		Id:        uint(1),
+		Notes:     "ini notes",
+		Proof:     "ini bukti",
+		UserId:    1,
+		MenteeId:  3,
+		StatusId:  1,
+		Approved:  true,
+	}
+	updatedData := feedbacks.FeedbackEntity{
+		Id:        uint(1),
+		Notes:     "ini notes",
+		Proof:     "ini bukti",
+		UserId:    1,
+		MenteeId:  3,
+		StatusId:  1,
+		Approved:  true,
+	}
+	t.Run("sukses update data", func(t *testing.T) {
+		repo.On("Update", uint(1), input).Return(updatedData, nil).Once()
 
-// 		res, err := srv.Update(input, 1)
-// 		assert.Nil(t, err)
-// 		assert.NotEmpty(t, res)
-// 		repo.AssertExpectations(t)
-// 	})
-// 	t.Run("Update Fail", func(t *testing.T) {
-// 		repo.On("Update", expected, 1).Return(tims.TeamEntity{}, errors.New("error update")).Once()
-// 		srv := New(repo)
-// 		res, err := srv.Update(input, 0)
-// 		assert.Empty(t, res)
-// 		assert.NotNil(t, err)
-// 		repo.AssertExpectations(t)
-// 	})
-// }
+		s := &feedbackService{Data: repo}
+
+		updated, err := s.Update(updatedData, input.Id)
+
+		assert.Nil(t, err)
+		assert.Equal(t, updatedData, updated)
+	})
+	t.Run("data tidak ditemukan", func(t *testing.T) {
+		repo.On("Update", uint(5), input).Return(updatedData, errors.New("data not found")).Once()
+
+		service := New(repo)
+		res, err := service.Update(updatedData, input.Id)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "tidak ditemukan")
+		assert.Equal(t, uint(0), res.Id)
+		repo.AssertExpectations(t)
+	})
+	t.Run("eror", func(t *testing.T) {
+		service := New(repo)
+		_, err := service.Update(updatedData, input.Id)
+
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "eror")
+	})
+}
+
