@@ -1,129 +1,220 @@
 package service
 
-// import (
-// 	"immersiveApp/features/mentees"
-// 	"immersiveApp/mocks"
-// 	"testing"
+import (
+	"errors"
+	"immersiveApp/features/mentees"
+	"immersiveApp/mocks"
+	"testing"
 
-// 	"github.com/stretchr/testify/assert"
-// )
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+)
 
-// func TestCreate(t *testing.T) {
-// 	// Create a mock object for MenteeServiceInterface
-// 	mockMenteeService := new(mocks.MenteeServiceInterface)
-// 	// Set up an expectation for the Create method
-// 	mockMentee := mentees.MenteeEntity{
-// 		Id:              uint(1),
-// 		ClassId:         1,
-// 		FullName:        "meong milanium",
-// 		NickName:        "meong",
-// 		Email:           "miyong@mail",
-// 		Phone:           "089765",
-// 		CurrentAddress:  "jl. sesama",
-// 		HomeAddress:     "malang",
-// 		Telegram:        "youma",
-// 		StatusId:        1,
-// 		Gender:          "L",
-// 		EducationType:   "non-informatics",
-// 		Major:           "DKV",
-// 		Graduate:        "1040",
-// 		Institution:     "UniGa",
-// 		EmergencyName:   "Jola",
-// 		EmergencyPhone:  "089890",
-// 		EmergencyStatus: "Kakek",
-// 	}
-// 	mockMenteeService.On("Create", mockMentee).Return(mockMentee, nil)
+func TestCreate(t *testing.T) {
+	repo := mocks.NewMenteeDataInterface(t)
+	input := mentees.MenteeEntity{
+		Id:              uint(1),
+		ClassId:         1,
+		FullName:        "Jomabala",
+		NickName:        "Balvir",
+		Email:           "bal@hotmail.com",
+		Phone:           "089",
+		CurrentAddress:  "jl santai",
+		HomeAddress:     "jl rusak",
+		Telegram:        "@siapakamu",
+		StatusId:        1,
+		Gender:          "P",
+		EducationType:   "non-informatics",
+		Major:           "Chemistry",
+		Graduate:        "1030",
+		Institution:     "UniGa",
+		EmergencyName:   "Blla",
+		EmergencyPhone:  "089",
+		EmergencyStatus: "Ibu",
+	}
+	srv := New(repo)
 
-// 	srv := New(mockMenteeService)
-// 	// Call the function that uses the mock object
-// 	result, err := srv.Create(mockMentee)
+	mockinput := mentees.MenteeEntity{
+		Id:              uint(2),
+		ClassId:         1,
+		FullName:        "",
+		NickName:        "",
+		Email:           "",
+		Phone:           "",
+		CurrentAddress:  "",
+		HomeAddress:     "",
+		Telegram:        "",
+		StatusId:        1,
+		Gender:          "",
+		EducationType:   "",
+		Major:           "",
+		Graduate:        "",
+		Institution:     "",
+		EmergencyName:   "",
+		EmergencyPhone:  "",
+		EmergencyStatus: "",
+	}
+	t.Run("succes", func(t *testing.T) {
+		repo.On("Store", input).Return(uint(1), nil)
+		repo.On("SelectById", uint(1)).Return(input, nil)
 
-// 	// Assert that the expectations were met
-// 	mockMenteeService.AssertExpectations(t)
-// 	assert.Nil(t, err)
-// 	assert.Equal(t, mockMentee, result)
-// }
+		created, err := srv.Create(input)
 
-// // func TestGetAll(t *testing.T) {
+		assert.NoError(t, err)
+		assert.Equal(t, input, created)
 
-// // }
+		repo.AssertExpectations(t)
+	})
 
-// // func TestGetById(t *testing.T) {
-// // 	repo := mocks.NewMenteeDataInterface(t)
-// // 	input := mentees.MenteeEntity{
-// // 		Id:              uint(1),
-// // 		ClassId:         1,
-// // 		FullName:        "meong milanium",
-// // 		NickName:        "meong",
-// // 		Email:           "miyong@mail",
-// // 		Phone:           "089765",
-// // 		CurrentAddress:  "jl. sesama",
-// // 		HomeAddress:     "malang",
-// // 		Telegram:        "youma",
-// // 		StatusId:        1,
-// // 		Gender:          "L",
-// // 		EducationType:   "non-informatics",
-// // 		Major:           "DKV",
-// // 		Graduate:        "1040",
-// // 		Institution:     "UniGa",
-// // 		EmergencyName:   "Jola",
-// // 		EmergencyPhone:  "089890",
-// // 		EmergencyStatus: "Kakek",
-// // 	}
-// // 	repo.On("SelectById", input.Id).Return(input, nil)
+	t.Run("eror", func(t *testing.T) {
+		_, err := srv.Create(mockinput)
+		assert.NotEmpty(t, err)
+		assert.NotNil(t, err)
+		repo.AssertExpectations(t)
+	})
+}
 
-// // 	srv := New(repo)
+func TestGetAll(t *testing.T) {
+	repo := mocks.NewMenteeDataInterface(t)
+	input := mentees.MenteeEntity{
+		Id:              uint(1),
+		ClassId:         1,
+		FullName:        "Jomabala",
+		NickName:        "Balvir",
+		Email:           "bal@hotmail.com",
+		Phone:           "089",
+		CurrentAddress:  "jl santai",
+		HomeAddress:     "jl rusak",
+		Telegram:        "@siapakamu",
+		StatusId:        1,
+		Gender:          "P",
+		EducationType:   "non-informatics",
+		Major:           "Chemistry",
+		Graduate:        "1030",
+		Institution:     "UniGa",
+		EmergencyName:   "Blla",
+		EmergencyPhone:  "089",
+		EmergencyStatus: "Ibu",
+	}
+	srv := New(repo)
 
-// // 	result, err := srv.GetById(input.Id)
-// // 	repo.AssertExpectations(t)
-// // 	assert.NoError(t, err)
-// // 	assert.Equal(t, input, result)
-// // }
+	mockList := make([]mentees.MenteeEntity, 0)
+	mockList = append(mockList, input)
 
-// // func TestGetFeedbackById(t *testing.T) {
+	repo.On("SelectAll").Return(mockList, nil)
 
-// // }
+	result, err := srv.GetAll()
 
-// // func TestUpdate(t *testing.T) {
+	repo.AssertExpectations(t)
+	assert.NoError(t, err)
+	assert.Len(t, result, len(mockList))
+	assert.Equal(t, mockList, result)
+}
 
-// // }
+func TestGetById(t *testing.T) {
+	repo := mocks.NewMenteeDataInterface(t)
+	input := mentees.MenteeEntity{
+		Id:              uint(1),
+		ClassId:         1,
+		FullName:        "meong milanium",
+		NickName:        "meong",
+		Email:           "miyong@mail",
+		Phone:           "089765",
+		CurrentAddress:  "jl. sesama",
+		HomeAddress:     "malang",
+		Telegram:        "youma",
+		StatusId:        1,
+		Gender:          "L",
+		EducationType:   "non-informatics",
+		Major:           "DKV",
+		Graduate:        "1040",
+		Institution:     "UniGa",
+		EmergencyName:   "Jola",
+		EmergencyPhone:  "089890",
+		EmergencyStatus: "Kakek",
+	}
+	repo.On("SelectById", input.Id).Return(input, nil)
 
-// // func TestDelete(t *testing.T) {
-// // 	repo := mocks.NewMenteeDataInterface(t)
-// // 	input := mentees.MenteeEntity{
-// // 		Id:              uint(1),
-// // 		ClassId:         1,
-// // 		FullName:        "meong milanium",
-// // 		NickName:        "meong",
-// // 		Email:           "miyong@mail",
-// // 		Phone:           "089765",
-// // 		CurrentAddress:  "jl. sesama",
-// // 		HomeAddress:     "malang",
-// // 		Telegram:        "youma",
-// // 		StatusId:        1,
-// // 		Gender:          "L",
-// // 		EducationType:   "non-informatics",
-// // 		Major:           "DKV",
-// // 		Graduate:        "1040",
-// // 		Institution:     "UniGa",
-// // 		EmergencyName:   "Jola",
-// // 		EmergencyPhone:  "089890",
-// // 		EmergencyStatus: "Kakek",
-// // 	}
-// // 	t.Run("Sukses Delete", func(t *testing.T) {
-// // 		repo.On("Delete", mock.Anything).Return(input, nil).Once()
-// // 		srv := New(repo)
-// // 		err := srv.Delete(1)
-// // 		assert.Nil(t, err)
-// // 		assert.NotEmpty(t, err)
-// // 		repo.AssertExpectations(t)
-// // 	})
-// // 	t.Run("Gagal Delete", func(t *testing.T) {
-// // 		repo.On("Delete", mock.Anything).Return(input, errors.New("error")).Once()
-// // 		srv := New(repo)
-// // 		err := srv.Delete(1)
-// // 		assert.NotNil(t, err)
-// // 		assert.NotEmpty(t, err)
-// // 		repo.AssertExpectations(t)
-// // 	})
-// // }
+	srv := New(repo)
+
+	result, err := srv.GetById(input.Id)
+	repo.AssertExpectations(t)
+	assert.NoError(t, err)
+	assert.Equal(t, input, result)
+}
+
+func TestGetFeedbackById(t *testing.T) {
+	repo := mocks.NewMenteeDataInterface(t)
+	input := mentees.MenteeEntity{
+		Id:              uint(1),
+		ClassId:         1,
+		FullName:        "meong milanium",
+		NickName:        "meong",
+		Email:           "miyong@mail",
+		Phone:           "089765",
+		CurrentAddress:  "jl. sesama",
+		HomeAddress:     "malang",
+		Telegram:        "youma",
+		StatusId:        1,
+		Gender:          "L",
+		EducationType:   "non-informatics",
+		Major:           "DKV",
+		Graduate:        "1040",
+		Institution:     "UniGa",
+		EmergencyName:   "Jola",
+		EmergencyPhone:  "089890",
+		EmergencyStatus: "Kakek",
+	}
+	repo.On("SelectFeedbackById", input.Id).Return(input, nil)
+
+	srv := New(repo)
+
+	result, err := srv.GetFeedbackById(input.Id)
+	repo.AssertExpectations(t)
+	assert.NoError(t, err)
+	assert.Equal(t, input, result)
+}
+
+func TestUpdate(t *testing.T) {
+
+}
+
+func TestDelete(t *testing.T) {
+	repo := mocks.NewMenteeDataInterface(t)
+	input := mentees.MenteeEntity{
+		Id:              uint(1),
+		ClassId:         1,
+		FullName:        "meong milanium",
+		NickName:        "meong",
+		Email:           "miyong@mail",
+		Phone:           "089765",
+		CurrentAddress:  "jl. sesama",
+		HomeAddress:     "malang",
+		Telegram:        "youma",
+		StatusId:        1,
+		Gender:          "L",
+		EducationType:   "non-informatics",
+		Major:           "DKV",
+		Graduate:        "1040",
+		Institution:     "UniGa",
+		EmergencyName:   "Jola",
+		EmergencyPhone:  "089890",
+		EmergencyStatus: "Kakek",
+	}
+	t.Run("Sukses Delete", func(t *testing.T) {
+		repo.On("Delete", mock.Anything).Return(input, nil).Once()
+		srv := New(repo)
+		err := srv.Delete(1)
+		assert.Nil(t, err)
+		assert.NotEmpty(t, err)
+		repo.AssertExpectations(t)
+	})
+	t.Run("Gagal Delete", func(t *testing.T) {
+		repo.On("Delete", mock.Anything).Return(input, errors.New("error")).Once()
+		srv := New(repo)
+		err := srv.Delete(1)
+		assert.NotNil(t, err)
+		assert.NotEmpty(t, err)
+		repo.AssertExpectations(t)
+	})
+}
