@@ -7,14 +7,14 @@ import (
 )
 
 type UserResponse struct {
-	Id          uint                   `json:"id"`
-	TeamId      uint                   `json:"team_id"`
+	Id          uint                   `json:"id,omitempty"`
+	TeamId      uint                   `json:"team_id,omitempty"`
 	FullName    string                 `json:"full_name"`
-	Email       string                 `json:"email"`
-	Role        string                 `json:"role"`
+	Email       string                 `json:"email,omitempty"`
+	Role        string                 `json:"role,omitempty"`
 	Status      bool                   `json:"status"`
-	PhoneNumber string                 `json:"phone_number"`
-	Address     string                 `json:"address"`
+	PhoneNumber string                 `json:"phone_number,omitempty"`
+	Address     string                 `json:"address,omitempty"`
 	Team        *delivery.TeamResponse `json:"team,omitempty"`
 }
 

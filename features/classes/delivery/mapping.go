@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"immersiveApp/features/classes"
+	"immersiveApp/features/users/delivery"
 	"reflect"
 )
 
@@ -24,7 +25,7 @@ func ClassEntityToClassResponse(classEntity classes.ClassEntity) ClassResponse {
 	}
 
 	if !reflect.ValueOf(classEntity.User).IsZero() {
-		result.User = UserResponse{
+		result.User = delivery.UserResponse{
 			FullName: classEntity.User.FullName,
 			Email:    classEntity.User.Email,
 		}
