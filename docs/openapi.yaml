@@ -656,7 +656,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /feedbacks/{id_feedback}:
+  /feedbacks/{id}:
     put:
       tags:
         - Feedback
@@ -665,7 +665,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id_feedback
+        - name: id
           description: "id feedback"
           required: true
           in: path
@@ -709,7 +709,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: id_feedback
+        - name: id
           description: "id feedback"
           required: true
           in: path
@@ -1164,8 +1164,8 @@ paths:
     get:
       tags:
         - Status
-      summary: get status by name
-      description: Mencari status dengan nama
+      summary: get all status
+      description: get all status
       parameters:
         - name: status_id
           description: "status"
@@ -1183,7 +1183,7 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
+                  status: true
                   message: "success get all status"
                   data:
                     - id: 1
