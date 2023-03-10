@@ -135,13 +135,27 @@ paths:
                   message: "success get all users"
                   data:
                     - id: 1
+                      team_id : 1,
                       full_name: "reza"
                       email: "reza@mail.com"
+                      role: "admin"
+                      status : true
                       address: "pekanbaru"
+                      "team": {
+                          "id": 1,
+                          "name": "Admin"
+                      }
                     - id: 2
+                      team_id : 1,
                       full_name: "rischi"
                       email: "rischi@mail.com"
+                      role: "admin"
+                      status : true
                       address: "pekanbaru"
+                      "team": {
+                          "id": 1,
+                          "name": "Placement"
+                      }
         '500':
           $ref: '#/components/responses/500'
 
@@ -176,6 +190,18 @@ paths:
                 example:
                   status: true
                   message: "register berhasil"
+                  data:
+                    - id: 1
+                      team_id : 1,
+                      full_name: "reza"
+                      email: "reza@mail.com"
+                      role: "admin"
+                      status : true
+                      address: "pekanbaru"
+                      "team": {
+                          "id": 1,
+                          "name": "Admin"
+                      }
         '401' :
           $ref: '#/components/responses/401'
         '500' :
