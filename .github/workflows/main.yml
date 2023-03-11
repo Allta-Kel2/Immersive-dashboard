@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /home/findryankpradana/Immersive-dashboard
-            sudo git pull origin dev
+            sudo git pull origin main
             sudo docker stop containerapi
             sudo docker rm containerapi
             sudo docker rmi imagesapi
